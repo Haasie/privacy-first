@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
-import { Grid, Text } from "@mantine/core";
+import { Grid } from "@mantine/core";
 import { dirname } from "@tauri-apps/api/path";
 import InputArea from "./InputArea";
 import PreviewPanel from "./PreviewPanel";
+import PiiPanel from "./PiiPanel";
 import { sidecar } from "../lib/sidecar";
 import type { RedactionResult } from "../lib/ipc";
 
@@ -52,7 +53,7 @@ export default function MainWindow() {
         <PreviewPanel result={result} inputText={inputText} />
       </Grid.Col>
       <Grid.Col span={12}>
-        <Text c="dimmed" size="sm">PII panel — Task 11</Text>
+        <PiiPanel result={result} filePath={filePath} outputDir={outputDir} />
       </Grid.Col>
     </Grid>
   );
