@@ -1,6 +1,7 @@
 mod commands;
 
 use commands::Sidecar;
+use tauri::Manager;
 use tauri_plugin_shell::ShellExt;
 
 pub fn run() {

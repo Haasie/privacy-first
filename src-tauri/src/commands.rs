@@ -55,6 +55,7 @@ impl Sidecar {
                 Some(CommandEvent::Terminated(_)) | None => {
                     return Err("sidecar terminated unexpectedly".to_string());
                 }
+                Some(_) => {}
             }
         }
     }
