@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Container, Text } from "@mantine/core";
 import SetupWizard from "./components/SetupWizard";
+import MainWindow from "./components/MainWindow";
 
 export default function App() {
   const [modelReady, setModelReady] = useState(false);
@@ -9,9 +9,5 @@ export default function App() {
     return <SetupWizard onReady={() => setModelReady(true)} />;
   }
 
-  return (
-    <Container>
-      <Text>Main window (Task 9)</Text>
-    </Container>
-  );
+  return <MainWindow />;
 }
