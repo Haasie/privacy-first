@@ -5,6 +5,7 @@ from pathlib import Path
 from . import ipc
 from . import model     # registers model_status and download_model handlers
 from . import redactor  # registers redact handler
+from . import parser    # registers parse_file handler
 
 
 @ipc.register("ping")
