@@ -3,7 +3,8 @@ import argparse
 from pathlib import Path
 
 from . import ipc
-from . import model  # registers model_status and download_model handlers
+from . import model     # registers model_status and download_model handlers
+from . import redactor  # registers redact handler
 
 
 @ipc.register("ping")
