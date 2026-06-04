@@ -3,7 +3,7 @@
 Placeholder format in output: <PRIVATE_PERSON>, <PRIVATE_EMAIL>, etc.
 (OPF's native format — uppercase angle-bracket labels.)
 """
-from . import ipc, model
+from . import errors, ipc, model
 
 _opf = None  # lazy-initialized; loading the model is expensive
 
@@ -31,7 +31,13 @@ def redact(params: dict) -> dict:
     if not (text := params.get("text", "")):
         return {"redacted_text": "", "spans": []}
 
-    result = _get_opf().redact(text)
+    try:
+        result = _get_opf().redact(text)
+    except Exception as exc:
+        msg = str(exc).lower()
+        if any(w in msg for w in ("memory", "cuda out of memory", "oom")):
+            raise errors.SidecarError(errors.MODEL_OOM, "Not enough memory to process this document — try a shorter text")
+        raise
 
     spans = [
         {

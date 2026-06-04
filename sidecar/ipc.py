@@ -50,4 +50,6 @@ def serve() -> None:
             result = _handlers[method](params)
             _write({"id": req_id, "result": result})
         except Exception as exc:
-            _write({"id": req_id, "error": {"code": -32603, "message": str(exc)}})
+            from .errors import SidecarError
+            code = exc.code if isinstance(exc, SidecarError) else -32603
+            _write({"id": req_id, "error": {"code": code, "message": str(exc)}})
