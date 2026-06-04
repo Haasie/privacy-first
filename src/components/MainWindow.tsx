@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { Grid, Text } from "@mantine/core";
 import { dirname } from "@tauri-apps/api/path";
 import InputArea from "./InputArea";
+import PreviewPanel from "./PreviewPanel";
 import { sidecar } from "../lib/sidecar";
 import type { RedactionResult } from "../lib/ipc";
 
@@ -9,7 +10,7 @@ export default function MainWindow() {
   const [filePath, setFilePath] = useState<string | null>(null);
   const [inputText, setInputText] = useState("");
   const [outputDir, setOutputDir] = useState<string | null>(null);
-  const [_result, setResult] = useState<RedactionResult | null>(null);
+  const [result, setResult] = useState<RedactionResult | null>(null);
   const [processing, setProcessing] = useState(false);
 
   const handleFilePicked = useCallback(async (path: string) => {
@@ -48,7 +49,7 @@ export default function MainWindow() {
         />
       </Grid.Col>
       <Grid.Col span={6}>
-        <Text c="dimmed" size="sm">Preview panel — Task 10</Text>
+        <PreviewPanel result={result} inputText={inputText} />
       </Grid.Col>
       <Grid.Col span={12}>
         <Text c="dimmed" size="sm">PII panel — Task 11</Text>
