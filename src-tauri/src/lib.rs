@@ -10,7 +10,25 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .setup(|app| {
-            let sidecar = match app.shell().sidecar("sidecar").and_then(|s| s.spawn()) {
+            // Store the model under the OS user-data dir, not next to the
+            // sidecar binary (which lives inside the signed .app bundle).
+            // Writing into the bundle would need admin rights in /Applications
+            // and would invalidate the code signature ("app is damaged").
+            let model_dir = app
+                .path()
+                .app_data_dir()
+                .expect("app data dir unavailable")
+                .join("models")
+                .join("openai-privacy-filter");
+            if let Err(e) = std::fs::create_dir_all(&model_dir) {
+                eprintln!("[setup] could not create model dir {model_dir:?}: {e}");
+            }
+
+            let spawn = app
+                .shell()
+                .sidecar("sidecar")
+                .and_then(|s| s.args(["--model-dir", &model_dir.to_string_lossy()]).spawn());
+            let sidecar = match spawn {
                 Ok((rx, child)) => Sidecar::new(child, rx),
                 Err(e) => {
                     eprintln!("[setup] sidecar unavailable: {e}");

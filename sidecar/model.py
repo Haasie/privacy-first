@@ -2,8 +2,12 @@
 
 Call set_model_dir() at startup to override the default path.
 Default: Path(sys.executable).parent / "models" / "openai-privacy-filter"
-In PyInstaller builds sys.executable is the sidecar binary, so this puts
-the model directory next to the Tauri app binary as required by FR-011.
+
+In production the Tauri host always passes --model-dir pointing at the OS
+user-data dir (e.g. ~/Library/Application Support/nl.haasie.privacy-first/
+models/openai-privacy-filter on macOS). Writing into the .app bundle next to
+the sidecar binary is avoided: it needs admin rights under /Applications and
+invalidates the code signature. The default above is only a dev fallback.
 """
 import sys
 from pathlib import Path
