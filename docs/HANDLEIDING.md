@@ -20,10 +20,10 @@ Privacy First helpt je om privégegevens (PII) uit documenten te verwijderen voo
 
 ## Eerste start — model downloaden
 
-Bij de allereerste start vraagt de app om het AI-model te downloaden (~500 MB). Dit is het OpenAI Privacy Filter model dat de privégegevens detecteert.
+Bij de allereerste start vraagt de app om het AI-model te downloaden (~2,6 GB). Dit is het OpenAI Privacy Filter model dat de privégegevens detecteert.
 
-- Klik op **Model downloaden**
-- Wacht totdat de download klaar is (de voortgangsbalk vult zich)
+- Klik op **Model downloaden (~2,6 GB)**
+- Wacht totdat de download klaar is — dit kan enkele minuten duren
 - Daarna start de app normaal op
 
 Het model wordt lokaal opgeslagen en je hebt daarna **geen internetverbinding meer nodig**.
@@ -61,8 +61,8 @@ Standaard wordt **alles** geredigeerd. Je kunt dit per item of per categorie aan
 - Klik nogmaals om ze weer in te schakelen
 
 **Per item:**
-- Klik op het **●-icoontje** naast een item om het te bewaren (het wordt ○ en krijgt een doorstreping)
-- Klik nogmaals op ○ om het alsnog te redigeren
+- Klik op het **slotje** naast een item om het te bewaren (het slotje opent zich en het item wordt doorgestreept)
+- Klik nogmaals op het open slotje om het alsnog te redigeren
 
 **In de voorvertoning:**
 - Klik direct op een gemarkeerde tekst om te wisselen tussen redigeren en bewaren
@@ -82,7 +82,7 @@ Na het opslaan:
 
 ## Uitvoermap wijzigen
 
-Standaard wordt het geredigeerde bestand in **dezelfde map** als het originele bestand opgeslagen. Wil je een andere map kiezen, klik dan op **Bladeren** naast het uitvoermap-veld.
+Standaard wordt het geredigeerde bestand in **dezelfde map** als het originele bestand opgeslagen. Wil je een andere map kiezen, klik dan op het **uitvoermap-veld** om een map te selecteren.
 
 ---
 

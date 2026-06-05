@@ -47,17 +47,17 @@ export default function SetupWizard({ onReady }: Props) {
   return (
     <Center h="100vh">
       <Stack align="center" gap="md" w={420}>
-        <Title order={2}>Welcome to privacy-first</Title>
+        <Title order={2}>Welkom bij Privacy First</Title>
         <Text ta="center" c="dimmed">
-          This app requires the <b>openai/privacy-filter</b> model (~6 GB) to detect
-          and redact PII locally. Nothing ever leaves your machine.
+          De app heeft het <b>openai/privacy-filter</b> model (~2,6 GB) nodig om privégegevens
+          lokaal te detecteren. Er wordt niets naar buiten gestuurd.
         </Text>
 
         {downloadError && (
-          <Alert color="red" title="Download failed" w="100%">
+          <Alert color="red" title="Download mislukt" w="100%">
             <Text size="sm">{downloadError}</Text>
             <Text size="xs" c="dimmed" mt={4}>
-              Check your internet connection and try again.
+              Controleer je internetverbinding en probeer het opnieuw.
             </Text>
           </Alert>
         )}
@@ -65,11 +65,11 @@ export default function SetupWizard({ onReady }: Props) {
         {downloading ? (
           <Stack align="center" gap="xs">
             <Loader size="md" />
-            <Text size="sm" c="dimmed">Downloading model — this can take several minutes…</Text>
+            <Text size="sm" c="dimmed">Model downloaden — dit kan enkele minuten duren…</Text>
           </Stack>
         ) : (
           <Button onClick={handleDownload} size="md">
-            {downloadError ? "Retry download" : "Download model (~6 GB)"}
+            {downloadError ? "Opnieuw proberen" : "Model downloaden (~2,6 GB)"}
           </Button>
         )}
       </Stack>
