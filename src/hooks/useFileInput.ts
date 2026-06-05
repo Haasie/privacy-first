@@ -13,7 +13,7 @@ export function useFileInput(onFilePicked: (path: string) => void) {
       .onDragDropEvent((event) => {
         if (event.payload.type === "over") {
           setIsDragging(true);
-        } else if (event.payload.type === "leave" || event.payload.type === "cancelled") {
+        } else if (event.payload.type === "leave") {
           setIsDragging(false);
         } else if (event.payload.type === "drop") {
           setIsDragging(false);
