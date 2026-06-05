@@ -51,11 +51,11 @@ jobs:
         shell: bash
         run: |
           TRIPLE="${{ matrix.target }}"
-          python3 -m PyInstaller \
+          ${{ matrix.python }} -m PyInstaller \
             --onefile \
             --name "sidecar-${TRIPLE}" \
             --distpath src-tauri/binaries \
-            --specpath /tmp/privacy-first-spec \
+            --specpath "$RUNNER_TEMP/privacy-first-spec" \
             --collect-all sidecar \
             --collect-all tiktoken \
             --collect-all tiktoken_ext \
