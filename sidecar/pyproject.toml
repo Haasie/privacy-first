@@ -16,5 +16,9 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "pyinstaller>=6.0"]
 
+[tool.setuptools]
+packages = ["sidecar"]
+package-dir = {"sidecar" = "."}
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
