@@ -84,12 +84,15 @@ jobs:
 
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: "Privacy First ${{ github.ref_name }}"
-          releaseBody: |
+          args: --target ${{ matrix.target }}
+
+      - name: Upload to GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          name: "Privacy First ${{ github.ref_name }}"
+          body: |
             ## Installatie
 
             **macOS:** open het `.dmg`, sleep de app naar Programma's.
@@ -99,6 +102,8 @@ jobs:
             Als Windows Defender een waarschuwing toont: klik op "Meer informatie" → "Toch uitvoeren".
 
             Het AI-model (~2,6 GB) wordt automatisch gedownload bij de eerste start.
-          releaseDraft: true
-          prerelease: false
-          args: --target ${{ matrix.target }}
+          files: |
+            src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+            src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz
+            src-tauri/target/${{ matrix.target }}/release/bundle/nsis/*-setup.exe
+            src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
