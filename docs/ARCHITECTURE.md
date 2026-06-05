@@ -56,7 +56,7 @@ Key state in `MainWindow`:
 A long-running process that reads newline-delimited JSON from stdin and writes responses to stdout. The Rust shell communicates with it exclusively via this pipe.
 
 ```
-sidecar_main.py     — entry point, starts the read loop
+../sidecar_main.py  — entry point (project root), starts the read loop
 ipc.py              — JSON-RPC dispatcher (@ipc.register decorator)
 model.py            — model loading, download, check
 redactor.py         — text redaction + PDF/DOCX output
@@ -79,7 +79,7 @@ Available methods: `check_model`, `download_model`, `parse_file`, `redact`, `sav
 
 ### AI model
 
-Model: `openai/privacy-filter` from Hugging Face. It is a small transformer trained to detect PII spans in text. It labels spans with categories: `private_person`, `private_email`, `private_phone`, `private_address`, `private_id`, `private_url`, `private_date`, `private_organization`, `account_number`.
+Model: `openai/privacy-filter` from Hugging Face (~2.6 GB download). It is a transformer trained to detect PII spans in text. It labels spans with categories: `private_person`, `private_email`, `private_phone`, `private_address`, `private_id`, `private_url`, `private_date`, `private_organization`, `account_number`.
 
 The model uses its own config format (not the standard HuggingFace format). Key detail: `config.json` must contain `encoding` (tiktoken name) and `bidirectional_context` fields. The `model.safetensors` file uses opf's own tensor layout, not the HF layout — so the `original/` directory files must be promoted to the model root.
 
@@ -137,13 +137,13 @@ privacy-first/
 │       ├── ipc.ts            TypeScript types
 │       └── sidecar.ts        Frontend sidecar client
 ├── sidecar/                Python sidecar
-│   ├── sidecar_main.py
 │   ├── ipc.py
 │   ├── model.py
 │   ├── redactor.py
 │   ├── parser.py
-│   ├── requirements.txt
+│   ├── pyproject.toml
 │   └── build.sh
+├── sidecar_main.py         PyInstaller entry point
 ├── src-tauri/              Rust shell
 │   ├── src/
 │   │   ├── lib.rs

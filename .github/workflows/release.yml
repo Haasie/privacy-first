@@ -90,7 +90,7 @@ jobs:
             **Windows:** voer de `_x64-setup.exe` uit. Geen beheerdersrechten nodig.
             Als Windows Defender een waarschuwing toont: klik op "Meer informatie" → "Toch uitvoeren".
 
-            Het AI-model (~500 MB) wordt automatisch gedownload bij de eerste start.
+            Het AI-model (~2,6 GB) wordt automatisch gedownload bij de eerste start.
           releaseDraft: true
           prerelease: false
           args: --target ${{ matrix.target }}

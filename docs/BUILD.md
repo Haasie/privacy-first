@@ -17,10 +17,8 @@ Install Rust via [rustup.rs](https://rustup.rs). Install Node.js via [nodejs.org
 # 1. Frontend dependencies
 npm install
 
-# 2. Python sidecar dependencies
-cd sidecar
-pip install -r requirements.txt
-cd ..
+# 2. Python sidecar dependencies (includes PyInstaller)
+pip install "sidecar/[dev]"
 ```
 
 ## Download the AI model
