@@ -44,7 +44,7 @@ jobs:
 
       - name: Install Python sidecar dependencies
         run: |
-          ${{ matrix.python }} -m pip install --upgrade pip
+          ${{ matrix.python }} -m pip install --upgrade pip setuptools wheel
           ${{ matrix.python }} -m pip install "sidecar/[dev]"
 
       - name: Build sidecar binary
