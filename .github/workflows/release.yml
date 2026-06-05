@@ -21,10 +21,6 @@ jobs:
             target: aarch64-apple-darwin
             python: python3
 
-          - platform: macos-13            # Intel Mac
-            target: x86_64-apple-darwin
-            python: python3
-
           - platform: windows-latest
             target: x86_64-pc-windows-msvc
             python: python
