@@ -34,6 +34,9 @@ $PYTHON -m PyInstaller \
   --distpath src-tauri/binaries \
   --specpath /tmp/privacy-first-spec \
   --collect-all sidecar \
+  --collect-all tiktoken \
+  --collect-all tiktoken_ext \
+  --collect-all opf \
   --hidden-import fitz \
   --clean \
   --noconfirm \

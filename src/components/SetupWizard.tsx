@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Center, Loader, Progress, Stack, Text, Title } from "@mantine/core";
+import { Alert, Button, Center, Loader, Stack, Text, Title } from "@mantine/core";
 import { useModelStatus } from "../hooks/useModelStatus";
 import { sidecar } from "../lib/sidecar";
 
@@ -49,24 +49,27 @@ export default function SetupWizard({ onReady }: Props) {
       <Stack align="center" gap="md" w={420}>
         <Title order={2}>Welcome to privacy-first</Title>
         <Text ta="center" c="dimmed">
-          This app requires the <b>openai/privacy-filter</b> model (~3 GB) to detect
+          This app requires the <b>openai/privacy-filter</b> model (~6 GB) to detect
           and redact PII locally. Nothing ever leaves your machine.
         </Text>
 
         {downloadError && (
-          <Text c="red" size="sm">
-            {downloadError}
-          </Text>
+          <Alert color="red" title="Download failed" w="100%">
+            <Text size="sm">{downloadError}</Text>
+            <Text size="xs" c="dimmed" mt={4}>
+              Check your internet connection and try again.
+            </Text>
+          </Alert>
         )}
 
         {downloading ? (
-          <Stack align="center" gap="xs" w="100%">
-            <Text size="sm" c="dimmed">Downloading model…</Text>
-            <Progress value={100} animated w="100%" />
+          <Stack align="center" gap="xs">
+            <Loader size="md" />
+            <Text size="sm" c="dimmed">Downloading model — this can take several minutes…</Text>
           </Stack>
         ) : (
           <Button onClick={handleDownload} size="md">
-            Download model (~3 GB)
+            {downloadError ? "Retry download" : "Download model (~6 GB)"}
           </Button>
         )}
       </Stack>

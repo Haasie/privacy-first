@@ -10,8 +10,14 @@ pub fn run() {
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .setup(|app| {
-            let (rx, child) = app.shell().sidecar("sidecar")?.spawn()?;
-            app.manage(Sidecar::new(child, rx));
+            let sidecar = match app.shell().sidecar("sidecar").and_then(|s| s.spawn()) {
+                Ok((rx, child)) => Sidecar::new(child, rx),
+                Err(e) => {
+                    eprintln!("[setup] sidecar unavailable: {e}");
+                    Sidecar::unavailable()
+                }
+            };
+            app.manage(sidecar);
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -21,6 +27,7 @@ pub fn run() {
             commands::redact,
             commands::parse_file,
             commands::save_output,
+            commands::save_redacted_file,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

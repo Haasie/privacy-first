@@ -12,11 +12,15 @@ struct Inner {
     rx: mpsc::Receiver<CommandEvent>,
 }
 
-pub struct Sidecar(Mutex<Inner>);
+pub struct Sidecar(Mutex<Option<Inner>>);
 
 impl Sidecar {
     pub fn new(child: CommandChild, rx: mpsc::Receiver<CommandEvent>) -> Self {
-        Self(Mutex::new(Inner { child, rx }))
+        Self(Mutex::new(Some(Inner { child, rx })))
+    }
+
+    pub fn unavailable() -> Self {
+        Self(Mutex::new(None))
     }
 
     async fn call(&self, method: &str, params: Value) -> Result<Value, String> {
@@ -27,10 +31,13 @@ impl Sidecar {
                 + "\n";
 
         let mut g = self.0.lock().await;
-        g.child.write(req.as_bytes()).map_err(|e| e.to_string())?;
+        let inner = g.as_mut().ok_or_else(|| {
+            "Sidecar not available — build it first with: bash sidecar/build.sh".to_string()
+        })?;
+        inner.child.write(req.as_bytes()).map_err(|e| e.to_string())?;
 
         loop {
-            match g.rx.recv().await {
+            match inner.rx.recv().await {
                 Some(CommandEvent::Stdout(bytes)) => {
                     let line = String::from_utf8_lossy(&bytes);
                     if let Ok(resp) = serde_json::from_str::<Value>(&line) {
@@ -89,6 +96,27 @@ pub async fn redact(sidecar: State<'_, Sidecar>, text: String) -> Result<Value, 
 #[tauri::command]
 pub async fn parse_file(sidecar: State<'_, Sidecar>, path: String) -> Result<Value, String> {
     sidecar.call("parse_file", json!({ "path": path })).await
+}
+
+#[tauri::command]
+pub async fn save_redacted_file(
+    sidecar: State<'_, Sidecar>,
+    source_path: String,
+    spans: Value,
+    redacted_text: String,
+    output_dir: Option<String>,
+) -> Result<Value, String> {
+    sidecar
+        .call(
+            "save_redacted_file",
+            json!({
+                "source_path": source_path,
+                "spans": spans,
+                "redacted_text": redacted_text,
+                "output_dir": output_dir,
+            }),
+        )
+        .await
 }
 
 // ── Native file I/O ──────────────────────────────────────────────────────────

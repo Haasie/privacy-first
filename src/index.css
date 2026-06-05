@@ -1,0 +1,9 @@
+@keyframes span-flash {
+  0%   { outline: 3px solid var(--flash-color, #f08c00); outline-offset: 1px; }
+  70%  { outline: 3px solid var(--flash-color, #f08c00); outline-offset: 1px; }
+  100% { outline: 3px solid transparent; outline-offset: 1px; }
+}
+.span-flash {
+  animation: span-flash 1.4s ease-out forwards;
+  border-radius: 3px;
+}

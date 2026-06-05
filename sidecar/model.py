@@ -40,16 +40,31 @@ def model_status(_params: dict) -> dict:
 def download_model(_params: dict) -> dict:
     """Download openai/privacy-filter from HuggingFace Hub.
 
+    Uses allow_patterns=["original/*"] — the opf checkpoint layout — then
+    promotes those files to the model root, matching opf's own downloader.
     Blocking — the IPC server cannot process other requests during download.
-    The wizard should show an indeterminate spinner while this runs.
-    Progress streaming is deferred to Task 8.
     """
+    import shutil
     from huggingface_hub import snapshot_download
 
     model_dir = get_model_dir()
     model_dir.mkdir(parents=True, exist_ok=True)
 
-    snapshot_download(repo_id="openai/privacy-filter", local_dir=str(model_dir))
+    snapshot_download(
+        repo_id="openai/privacy-filter",
+        local_dir=str(model_dir),
+        allow_patterns=["original/*"],
+    )
+
+    # Promote original/* to root (opf's expected layout).
+    original_dir = model_dir / "original"
+    if original_dir.is_dir():
+        for src in original_dir.iterdir():
+            dest = model_dir / src.name
+            if dest.exists():
+                dest.unlink() if dest.is_file() else shutil.rmtree(str(dest))
+            shutil.move(str(src), str(dest))
+        original_dir.rmdir()
 
     # Version marker written last so status() only reports ready after
     # a complete, successful download.

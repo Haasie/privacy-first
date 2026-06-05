@@ -37,4 +37,23 @@ export const sidecar = {
   saveOutput(text: string, sourcePath: string, outputDir: string | null): Promise<string> {
     return invoke<string>("save_output", { text, sourcePath, outputDir });
   },
+
+  /**
+   * Save a redacted version of the source file.
+   * PDFs get a proper redacted PDF (black boxes over PII), DOCX gets replaced
+   * placeholders, TXT gets the plain redacted text. Returns the output path.
+   */
+  saveRedactedFile(
+    sourcePath: string,
+    spans: import("./ipc").PiiSpan[],
+    redactedText: string,
+    outputDir: string | null,
+  ): Promise<{ path: string }> {
+    return invoke<{ path: string }>("save_redacted_file", {
+      sourcePath,
+      spans,
+      redactedText,
+      outputDir,
+    });
+  },
 };

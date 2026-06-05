@@ -6,6 +6,10 @@ dist/
 # Tauri
 src-tauri/target/
 src-tauri/gen/
+src-tauri/binaries/
+
+# Build output
+build/
 
 # Python
 __pycache__/

@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest        # Apple Silicon
+            target: aarch64-apple-darwin
+            python: python3
+
+          - platform: macos-13            # Intel Mac
+            target: x86_64-apple-darwin
+            python: python3
+
+          - platform: windows-latest
+            target: x86_64-pc-windows-msvc
+            python: python
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Rust target
+        run: rustup target add ${{ matrix.target }}
+
+      - name: Install Python sidecar dependencies
+        run: |
+          ${{ matrix.python }} -m pip install --upgrade pip
+          ${{ matrix.python }} -m pip install "sidecar/[dev]"
+
+      - name: Build sidecar binary
+        shell: bash
+        run: |
+          TRIPLE="${{ matrix.target }}"
+          python3 -m PyInstaller \
+            --onefile \
+            --name "sidecar-${TRIPLE}" \
+            --distpath src-tauri/binaries \
+            --specpath /tmp/privacy-first-spec \
+            --collect-all sidecar \
+            --collect-all tiktoken \
+            --collect-all tiktoken_ext \
+            --collect-all opf \
+            --hidden-import fitz \
+            --clean \
+            --noconfirm \
+            sidecar_main.py
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Privacy First ${{ github.ref_name }}"
+          releaseBody: |
+            ## Installatie
+
+            **macOS:** open het `.dmg`, sleep de app naar Programma's.
+            Eerste keer openen: klik rechts op de app → Openen → Toch openen.
+
+            **Windows:** voer de `_x64-setup.exe` uit. Geen beheerdersrechten nodig.
+            Als Windows Defender een waarschuwing toont: klik op "Meer informatie" → "Toch uitvoeren".
+
+            Het AI-model (~500 MB) wordt automatisch gedownload bij de eerste start.
+          releaseDraft: true
+          prerelease: false
+          args: --target ${{ matrix.target }}

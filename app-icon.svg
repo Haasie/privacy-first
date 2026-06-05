@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- Blue rounded square background -->
+  <rect width="1024" height="1024" rx="200" fill="#1971c2"/>
+
+  <!-- White shield, larger and centered -->
+  <path d="M512 148 L232 278 L232 560 C232 735 358 882 512 958 C666 882 792 735 792 560 L792 278 Z"
+        fill="white"/>
+
+  <!-- Lock shackle (arch above body) — thick stroke, dark blue -->
+  <path d="M422 524 L422 446 C422 360 602 360 602 446 L602 524"
+        fill="none" stroke="#1971c2" stroke-width="62" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Lock body rectangle -->
+  <rect x="382" y="516" width="260" height="210" rx="30" fill="#1971c2"/>
+
+  <!-- Keyhole circle + stem -->
+  <circle cx="512" cy="592" r="36" fill="white"/>
+  <rect x="494" y="594" width="36" height="56" rx="12" fill="white"/>
+</svg>
