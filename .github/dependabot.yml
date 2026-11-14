@@ -1,0 +1,33 @@
+# Alleen beveiligingsupdates, gebundeld tot één PR per pakketbeheerder.
+# Versie-updates staan uit (open-pull-requests-limit: 0): dit is geen actief
+# onderhouden live-dienst, dus alleen wat een bekende kwetsbaarheid dicht.
+# Dependabot-opruiming 14-11-2026 (_omgevingen/dependabot-voorstel.md, punt 3).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directories: ["/"]
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 0
+    groups:
+      beveiliging:
+        applies-to: security-updates
+        patterns: ["*"]
+  - package-ecosystem: cargo
+    directories: ["/src-tauri"]
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 0
+    groups:
+      beveiliging:
+        applies-to: security-updates
+        patterns: ["*"]
+  - package-ecosystem: pip
+    directories: ["/sidecar"]
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 0
+    groups:
+      beveiliging:
+        applies-to: security-updates
+        patterns: ["*"]
